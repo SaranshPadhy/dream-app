@@ -38,7 +38,6 @@ def get_dream_by_emotion(emotion_filter: str, db: sqlite3.Connection = Depends(g
     except sqlite3.Error as e:
         raise HTTPException(status_code=500, detail=f"Database error: {e}")
 
-
 @app.get("/dreams/{id}")
 def get_dream_by_id(id: int, db: sqlite3.Connection = Depends(get_db)):
     try:
@@ -66,8 +65,22 @@ def get_dream_by_id(id: int, db: sqlite3.Connection = Depends(get_db)):
         raise HTTPException(status_code=500, detail=f"Database error: {e}")
 
 @app.delete("/dreams/{id}")
+def delete_dream(id: int, db: sqlite3.Connection = Depends(get_db)):
+    try:
+        with db as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                DELETE FROM dreams WHERE id=? RETURNING *
+            """, (id,))
+            deleted_dream = cursor.fetchone()
 
+            if deleted_dream is None:
+                raise HTTPException(status_code=404, detail="Dream not found with that ID")
 
+            return dict(deleted_dream)
+    except sqlite3.Error as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Database error: {e}")
 
 @app.put("/dreams/{id}")
 
