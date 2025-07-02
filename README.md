@@ -49,3 +49,4 @@ npm run dev
 **Dev Notes**:
 
 - Uses Python, FastAPI, React, HTML/CSS for styling and website building!
+- Right now not deployed - but will deploy on the portfolio website (coming soon!)
