@@ -5,10 +5,10 @@ from typing import Optional, List
 class DreamSchema(BaseModel):
     name: str
     description: str
-    dreamdate: date
+    dream_date: date
     lucidity: bool
-    sleepduration: Optional[int]
+    sleep_duration: Optional[int]
     recurring: Optional[bool] = False
-    roomtemp: Optional[int]
-    stressbeforesleep: Optional[int]
+    room_temp: Optional[int]
+    stress_before_sleep: Optional[int]
     emotions: List[str] = []

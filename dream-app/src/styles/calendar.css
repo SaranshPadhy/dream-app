@@ -1,0 +1,160 @@
+/* === Base Layout === */
+.calendar-page {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+  background-color: #f9f9f9;
+}
+
+/* === Header & Navigation === */
+.calendar-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.calendar-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.nav-button {
+  background: #ffffff;
+  border: 1px solid #ccc;
+  padding: 0.4rem 0.8rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.nav-button:hover {
+  background: #f0f0f0;
+}
+
+.calendar-filter select {
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  font-family: 'Segoe UI', 'Inter', system-ui, sans-serif;
+  background-color: #fff;
+  color: #333;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.calendar-filter select:hover {
+  border-color: #888;
+}
+
+.calendar-filter select:focus {
+  border-color: #0066ff;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.2);
+}
+
+
+/* === Weekday Header === */
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: bold;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.weekday-header {
+  padding: 0.5rem 0;
+}
+
+/* === Calendar Grid === */
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.25rem;
+}
+
+.calendar-day {
+  background: #ffffff;
+  border-radius: 8px;
+  min-height: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border: 1px solid #eee;
+  color: inherit;
+  transition: box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.calendar-day:hover {
+  background: #f3f6ff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.calendar-day.empty {
+  background: transparent;
+  border: none;
+}
+
+/* === Today Highlight === */
+.calendar-day.today {
+  border: 2px solid #0066ff;
+  font-weight: bold;
+}
+
+/* === Dream Indicator === */
+.calendar-day.has-dream {
+  font-weight: bold;
+  color: #222;
+}
+
+.dot-indicator {
+  margin-top: 0.25rem;
+  font-size: 0.6rem;
+  color: #d97706; /* golden dot */
+}
+
+/* === Legend === */
+.calendar-legend {
+  margin-top: 2rem;
+  display: flex;
+  gap: 2rem;
+  font-size: 0.9rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.legend-color {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.today-indicator {
+  background: #0066ff;
+}
+
+.dream-indicator {
+  color: #d97706;
+}
+
+/* === Loading & Error === */
+.calendar-loading,
+.calendar-error {
+  text-align: center;
+  font-size: 1.1rem;
+  padding: 2rem 0;
+  color: #999;
+}

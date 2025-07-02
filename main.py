@@ -1,5 +1,6 @@
 import sqlite3, json
 from fastapi import FastAPI, HTTPException, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from datetime import datetime, date
 from typing import List, Optional
@@ -11,6 +12,14 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # React’s dev server
+    allow_credentials=True,
+    allow_methods=["*"],                      
+    allow_headers=["*"],
+)
 
 @app.get("/dreams/by-emotion/{emotion_filter}")
 def get_dream_by_emotion(emotion_filter: str, db: sqlite3.Connection = Depends(get_db)):
@@ -98,7 +107,7 @@ def update_dream(id: int, dream: DreamSchema, db: sqlite3.Connection = Depends(g
             
             cursor.execute("""
                 UPDATE dreams SET name=?, description=?, dream_date=?, lucidity=?, sleep_duration=?, recurring=?, room_temp=?, stress_before_sleep=? WHERE id=?
-            """, (dream.name, dream.description, dream.dreamdate, dream.lucidity, dream.sleepduration, dream.recurring, dream.roomtemp, dream.stressbeforesleep, id))
+            """, (dream.name, dream.description, dream.dream_date, dream.lucidity, dream.sleep_duration, dream.recurring, dream.room_temp, dream.stress_before_sleep, id))
 
             dream_data = dict(row)
 
@@ -127,7 +136,7 @@ def add_dream(dream: DreamSchema, db: sqlite3.Connection = Depends(get_db)):
         cursor = db.cursor()
         cursor.execute(
             "INSERT INTO dreams (name, description, dream_date, lucidity, sleep_duration, recurring, room_temp, stress_before_sleep) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-            (dream.name, dream.description, dream.dreamdate, dream.lucidity, dream.sleepduration, dream.recurring, dream.roomtemp, dream.stressbeforesleep)
+            (dream.name, dream.description, dream.dream_date, dream.lucidity, dream.sleep_duration, dream.recurring, dream.room_temp, dream.stress_before_sleep)
         )
         dream_no = cursor.lastrowid
 
@@ -160,9 +169,12 @@ def get_dreams_by_year_month(year: int, month: int, db: sqlite3.Connection = Dep
     try:
         if month > 12 or month < 1:
             raise HTTPException(status_code=400, detail="Invalid month")
-        
+
         month_padded = str(month).zfill(2)
-        query = f"SELECT dreams.id, dreams.name, dreams.dream_date FROM dreams WHERE dream_date BETWEEN '{year}-{month_padded}-01' AND '{year}-{month_padded}-31'"
+        query = f"""
+            SELECT id, name, dream_date FROM dreams
+            WHERE dream_date BETWEEN '{year}-{month_padded}-01' AND '{year}-{month_padded}-31'
+        """
 
         cursor = db.cursor()
         cursor.execute(query)
@@ -171,9 +183,15 @@ def get_dreams_by_year_month(year: int, month: int, db: sqlite3.Connection = Dep
 
         for individual_dream in dreams_this_month:
             dict_dream = dict(individual_dream)
+
+            # Attach emotions for this dream
+            cursor.execute("SELECT emotion FROM emotions WHERE dream_id = ?", (dict_dream["id"],))
+            emotion_data = cursor.fetchall()
+            emotion_list = [row["emotion"] for row in emotion_data]
+            dict_dream["emotions"] = emotion_list
+
             result.append(dict_dream)
-        
+
         return result
     except sqlite3.Error as e:
-        db.rollback()
         raise HTTPException(status_code=500, detail=f"Database error: {e}")

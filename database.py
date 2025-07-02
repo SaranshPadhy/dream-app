@@ -35,8 +35,8 @@ def init_db():
                 """CREATE TABLE IF NOT EXISTS emotions(
                         id INTEGER PRIMARY KEY,
                         dream_id INTEGER NOT NULL,
-                        FOREIGN KEY(dream_id) REFERENCES dreams(id) ON DELETE CASCADE,
-                        emotion TEXT NOT NULL
+                        emotion TEXT NOT NULL,
+                        FOREIGN KEY(dream_id) REFERENCES dreams(id) ON DELETE CASCADE
                     )"""
             )
             conn.commit()
