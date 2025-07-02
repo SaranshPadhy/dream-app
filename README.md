@@ -15,6 +15,7 @@ To start the app:
 ### Clone the repo:
 
 git clone https://github.com/SaranshPadhy/dream-app.git
+
 cd dream-app
 
 ### 2. Install Docker
