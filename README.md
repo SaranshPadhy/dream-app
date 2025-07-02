@@ -1,12 +1,12 @@
 # Dream Tracker 💤
 
-A full-stack dream logging app with a calendar view, emotion tagging, and analytics-ready structure.
+A full-stack CRUD dream logging app with a calendar view, emotion tagging, and emotion filtering!
 
 Built with:
 - React (frontend)
 - FastAPI + SQLite (backend)
-- Plain CSS
-- Dockerized backend for easy deployment
+- Plain old CSS
+- Dockerized backend for easy deployment!
 
 ---
 
