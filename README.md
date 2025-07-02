@@ -23,6 +23,7 @@ cd dream-app
 ### 3. Build and run backend:
 
 docker build -t dream-api .
+
 docker run -d -p 8000:8000 \
   -v $(pwd)/dream.db:/app/dream.db \
   --name dream-api-container dream-api
