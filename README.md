@@ -12,7 +12,7 @@ Built with:
 
 To start the app:
 
-### Clone the repo:
+### 1. Clone this repo:
 
 git clone https://github.com/SaranshPadhy/dream-app.git
 
