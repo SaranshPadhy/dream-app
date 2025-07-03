@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { fetchDreamsByMonth } from '../api/dreams';
 import '../styles/calendar.css';
 
-
 export default function CalendarPage() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [dreams, setDreams] = useState([]);
@@ -43,7 +42,12 @@ export default function CalendarPage() {
   }, [currentYear, currentMonth, emotionFilter]);
 
   if (loading) return <p className="calendar-loading">Loading dreams…</p>;
-  if (error) return <p className="calendar-error">Error: {error}</p>;
+  if (error) return (
+    <div className="calendar-error">
+      <p>{error.includes("Database is busy") ? "Please wait and try again — database is still writing." : `Error: ${error}`}</p>
+      <button onClick={() => window.location.reload()}>Retry</button>
+    </div>
+  );
 
   const dreamMap = Object.fromEntries(
     dreams.map(d => [parseInt(d.dream_date.split('-')[2], 10), d.id])

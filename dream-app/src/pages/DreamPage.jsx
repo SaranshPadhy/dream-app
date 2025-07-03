@@ -73,7 +73,7 @@ export default function DreamPage() {
       if (!response.ok) throw new Error('Failed to update dream');
       setSuccess(true);
     }).catch((error) => {
-      console.error(error);
+      setError(error.message || 'Error updating dream');
     });
   };
 
@@ -82,11 +82,16 @@ export default function DreamPage() {
     fetch(`${apiURL}dreams/${id}`, {
       method: 'DELETE'
     }).then(() => nav('/'))
-      .catch((error) => console.error(error));
+      .catch((error) => setError(error.message || 'Error deleting dream'));
   };
 
   if (loading) return <p className="dream-loading">Loading dream…</p>;
-  if (error) return <p className="dream-error">Error: {error}</p>;
+  if (error) return (
+    <div className="dream-error">
+      <p>{error.includes("Database is busy") ? "Please wait and try again — database is still writing." : `Error: ${error}`}</p>
+      <button onClick={() => window.location.reload()}>Retry</button>
+    </div>
+  );
   if (!dream) return <p>No dream found.</p>;
 
   return (

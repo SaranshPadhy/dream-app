@@ -51,7 +51,7 @@ export default function AddDreamPage() {
       return response.json();
     }).then(data => {
       setSuccess(true);
-      nav(`/dreams/${data.id}`);
+      setTimeout(() => nav('/'), 1000);
     }).catch((error) => {
       console.error(error);
     });
@@ -66,7 +66,7 @@ export default function AddDreamPage() {
   return (
     <div className="dream-page">
       <h2 className="form-title">Add a New Dream</h2>
-      {success && <p className="success-message">Dream added successfully!</p>}
+      {success && <p className="success-message">Dream added successfully! Redirecting…</p>}
 
       <form className="dream-form" onSubmit={handleSubmit}>
         <label>Title:
